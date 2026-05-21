@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mi Wishlist 🎁</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f5f5f5;
+    margin: 0;
+}
+
+/* 🔵 HEADER AZUL */
+header {
+    background: #007BFF;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.versiculo {
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 10px;
+    color: #cce5ff;
+}
+
+.broma {
+    margin-top: 5px;
+    font-size: 13px;
+    color: #e6f0ff;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+.filtros {
+    margin: 20px 0;
+    text-align: center;
+}
+
+select {
+    padding: 8px;
+    font-size: 16px;
+}
+
+.categoria {
+    margin-top: 30px;
+}
+
+.categoria h2 {
+    border-bottom: 2px solid #007BFF;
+    padding-bottom: 5px;
+}
+
+/* 🔵 GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* 🔵 CARDS */
+.card {
+    background: #0d6efd;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px gray;
+    text-align: center;
+    transition: transform 0.2s;
+    position: relative;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* 🔵 TOP */
+.top {
+    border: 2px solid #00c3ff;
+    background: #1e90ff;
+}
+
+.top-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #00c3ff;
+    color: black;
+    padding: 4px 7px;
+    font-size: 12px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* 🔵 PRECIO */
+.precio {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* 🔵 BOTONES */
+a.boton {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px;
+    background: white;
+    color: #0d6efd;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+a.boton:hover {
+    background: #e6e6e6;
+}
+
+.meme {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎁 Mi Wishlist</h1>
+    <p>😄</p>
+
+    <div class="versiculo">
+        “El alma generosa será prosperada; y el que saciare, él también será saciado.” – Proverbios 11:25
+    </div>
+
+    <div class="broma">
+        (Traduccion: no sea apretao que Dios bendice al dador alegre 😇🙏)
+    </div>
+</header>
+
+<div class="container">
+
+<div class="filtros">
+    <select id="filtro" onchange="mostrar()">
+        <option value="todos">Todos</option>
+        <option value="1000-10000">$1.000 - $10.000</option>
+        <option value="11000-20000">$11.000 - $20.000</option>
+        <option value="21000-40000">$21.000 - $40.000</option>
+        <option value="41000+">$41.000+</option>
+    </select>
+</div>
+
+<div id="contenedor"></div>
+
+</div>
+
+<script>
+
+let regalos = [
+    { nombre: "Poleron Azul Bvngbvng", categoria: "Ropa", precio: 54990, link: "https://bvnggvng.cl/products/poleron-shooters-triple-white-blue", top: 1 },
+    { nombre: "Zapas LaFrance", categoria: "Zapatillas", precio: 69990, link: "https://www.artmob.cl/products/zapatillas-puma-hoops-x-lafrance-black-chrome?variant=47031018193132&country=CL&currency=CLP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&srsltid=AfmBOooU4aXXSF3UP4NP5HI-_8K68nDeFn00gehFkiikx6bww3cZeLvAcjc", top: 8 },
+    { nombre: "Mouse Gamer", categoria: "Tecnología", precio: 20000, link: "https://www.lider.cl/ip/accesorios-computacion/mouse-gamer-gamer-g203-negro/00009785515597?channable=42320f696400303030303937383535313535393722&gclsrc=aw.ds&&utm_source=google&utm_medium=pmax&utm_campaign=walp_ce_cl_performance-max_conversion_pmax-ce-201_v2&utm_content=ce_pmax_llt_aon&gad_source=1&gad_campaignid=21981364026&gclid=CjwKCAjwt7XQBhBkEiwAtStppyTV8kumX-Ovhhu_fUGMnulMfk8k8TZL303V8X3G_wb5VrSyHiRPlhoC71YQAvD_BwE", top: 11 },
+    { nombre: "Zapas Nike Exotic", categoria: "Zapatillas", precio: 90990, link: "https://www.nike.cl/im8120-464-dia-de-muertos/p", top: 3 },
+    { nombre: "Polera Negra-Blanca-Azul", categoria: "Ropa", precio: null, link: "", top: 10 },
+    { nombre: "Poleron DabarWear", categoria: "Ropa", precio: 39990, link: "https://dabarwear.com/products/hoodie-boxy-zip-up-negro-ungido", top: 3 },
+    { nombre: "Perfume\n(Pal dia dia)", categoria: "Uste Sabe", precio: null, link: "", top: 9 },
+    { nombre: "Vinilo\n((Me dejo sorprender)", categoria: "Uste Sabe", precio: null, link: "", top: 5 },
+    { nombre: "Pantalon Exotico", categoria: "Ropa", precio: null, link: "", top: 6 },
+    { nombre: "Camara Llavero", categoria: "Tecnología", precio: 38100, link: "https://es.aliexpress.com/item/1005012080431942.html?src=google&src=google&albch=shopping&acnt=179-224-6891&isdl=y&slnk=&plac=&mtctp=&albbt=Google_7_shopping&aff_platform=google&aff_short_key=_oFgTQeV&gclsrc=aw.ds&albagn=888888&ds_e_adid=&ds_e_matchtype=&ds_e_device=c&ds_e_network=x&ds_e_product_group_id=&ds_e_product_id=es1005012080431942&ds_e_product_merchant_id=5684346183&ds_e_product_country=CL&ds_e_product_language=es&ds_e_product_channel=online&ds_e_product_store_id=&ds_url_v=2&albcp=23158820369&albag=&isSmbAutoCall=false&needSmbHouyi=false&gad_source=1&gad_campaignid=23153542506&gclid=CjwKCAjwt7XQBhBkEiwAtStpp5RbDBNi7GoxItTkhSnZPNo3z_EaoQJE19uX3KF4VwO3k1OYSOkB7hoCFvcQAvD_BwE", top: 2 },
+    { nombre: "Dinero", categoria: "Plata", precio: 20000, link: "", top: 7 }
+];
+
+regalos.sort((a, b) => a.top - b.top);
+
+/* 🔥 ARREGLADO */
+function pasaFiltro(r, filtro) {
+    if (filtro === "todos") return true;
+
+    if (r.precio == null) return true;
+
+    if (filtro.includes("+")) {
+        let min = parseInt(filtro);
+        return r.precio >= min;
+    }
+
+    let [min, max] = filtro.split("-").map(Number);
+    return r.precio >= min && r.precio <= max;
+}
+
+function agrupar(filtro) {
+    let grupos = {};
+
+    regalos.forEach(r => {
+        if (!pasaFiltro(r, filtro)) return;
+
+        if (!grupos[r.categoria]) {
+            grupos[r.categoria] = [];
+        }
+        grupos[r.categoria].push(r);
+    });
+
+    return grupos;
+}
+
+function formatoPrecio(num) {
+    return "$" + num.toLocaleString("es-CL");
+}
+
+function mostrar() {
+    let contenedor = document.getElementById("contenedor");
+    contenedor.innerHTML = "";
+
+    let filtro = document.getElementById("filtro").value;
+    let grupos = agrupar(filtro);
+
+    for (let categoria in grupos) {
+
+        let seccion = `
+        <div class="categoria">
+            <h2>${categoria}</h2>
+            <div class="grid">
+        `;
+
+        grupos[categoria].forEach(r => {
+            seccion += `
+            <div class="card ${r.top <= 3 ? 'top' : ''}">
+                ${r.top <= 3 ? `<div class="top-badge">TOP ${r.top}</div>` : ""}
+                <h3>${r.nombre}</h3>
+                <p class="precio">
+                    ${r.precio != null ? formatoPrecio(r.precio) : "Sin precio"}
+                </p>
+                ${r.link ? `<a class="boton" href="${r.link}" target="_blank">Ver</a>` : ""}
+            </div>
+            `;
+        });
+
+        seccion += `</div></div>`;
+        contenedor.innerHTML += seccion;
+    }
+}
+
+window.onload = mostrar;
+
+</script>
+
+</body>
+</html>
